@@ -12,6 +12,7 @@ import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @AndroidEntryPoint // Class to which we want inject another class(es) annotated
@@ -23,19 +24,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        println(someClass.toDoSomeThing())
+        println(someClass.toDoSomeThing1())
+        println(someClass.toDoSomeThing2())
     }
 }
 
 class SomeClass @Inject constructor(
-        private val someInterfaceImpl: SomeInterface, // Example of constructor DI
+        @Impl1 private val someInterfaceImpl1: SomeInterface, // Example of constructor DI
+        @Impl2 private val someInterfaceImpl2: SomeInterface, // Example of constructor DI
         private val gson: Gson                        // Example of constructor DI
 ) {
-    fun toDoSomeThing() = someInterfaceImpl.toDoSomeThingMore()
+    fun toDoSomeThing1() = someInterfaceImpl1.toDoSomeThingMore()
+    fun toDoSomeThing2() = someInterfaceImpl2.toDoSomeThingMore()
 }
 
-class SomeInterfaceImpl @Inject constructor() : SomeInterface {
-    override fun toDoSomeThingMore() = "I did some more"
+class SomeInterfaceImpl1 @Inject constructor() : SomeInterface {
+    override fun toDoSomeThingMore() = "I did some more 1"
+}
+
+class SomeInterfaceImpl2 @Inject constructor() : SomeInterface {
+    override fun toDoSomeThingMore() = "I did some more 2"
 }
 
 interface SomeInterface {
@@ -47,9 +55,15 @@ interface SomeInterface {
 @InstallIn(ApplicationComponent::class)
 abstract class InterfaceModule {
 
+    @Impl1
     @Singleton
     @Binds
-    abstract fun bindInterface(someInterfaceImpl: SomeInterfaceImpl): SomeInterface
+    abstract fun bindInterface1(someInterfaceImpl1: SomeInterfaceImpl1): SomeInterface
+
+    @Impl2
+    @Singleton
+    @Binds
+    abstract fun bindInterface2(someInterfaceImpl2: SomeInterfaceImpl2): SomeInterface
 }
 
 /**Module for injecting of third-party classes*/
@@ -61,3 +75,11 @@ class GsonModule {
     @Provides
     fun provideGson(): Gson = Gson()
 }
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class Impl1
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class Impl2
