@@ -1,12 +1,12 @@
-package com.palchak.sergey.daggerhiltplayground.retrofit
+package com.palchak.sergey.daggerhiltplayground.room
 
 import com.palchak.sergey.daggerhiltplayground.model.Blog
 import com.palchak.sergey.daggerhiltplayground.util.EntityMapper
 import javax.inject.Inject
 
-class NetworkMapper
-@Inject constructor() : EntityMapper<BlogNetworkEntity, Blog>{
-    override fun mapFromEntity(entity: BlogNetworkEntity): Blog {
+class CacheMapper
+@Inject constructor() : EntityMapper<BlogCacheEntity, Blog>{
+    override fun mapFromEntity(entity: BlogCacheEntity): Blog {
         return Blog(
                 entity.id,
                 entity.title,
@@ -16,8 +16,8 @@ class NetworkMapper
         )
     }
 
-    override fun mapToEntity(domainModel: Blog): BlogNetworkEntity {
-        return BlogNetworkEntity(
+    override fun mapToEntity(domainModel: Blog): BlogCacheEntity {
+        return BlogCacheEntity(
                 domainModel.id,
                 domainModel.title,
                 domainModel.body,
@@ -26,7 +26,7 @@ class NetworkMapper
         )
     }
 
-    fun mapFromEntityList(entities: List<BlogNetworkEntity>): List<Blog> {
+    fun mapFromEntityList(entities: List<BlogCacheEntity>): List<Blog> {
         return entities.map { mapFromEntity(it) }
     }
 }
