@@ -13,5 +13,4 @@ interface BlogDao {
 
     @Query("SELECT * FROM blogs")
     suspend fun get(): List<BlogCacheEntity>
-
 }

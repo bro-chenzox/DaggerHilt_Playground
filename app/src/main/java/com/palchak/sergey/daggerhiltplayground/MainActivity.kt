@@ -17,6 +17,7 @@ import javax.inject.Singleton
 
 private const val TAG = "AppDebug"
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -6,5 +6,4 @@ data class Blog(
         var body: String,
         var image: String,
         var category: String
-) {
-}
+)
